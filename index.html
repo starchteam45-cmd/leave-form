@@ -420,10 +420,17 @@ const btn=document.getElementById("submitBtn")
 btn.disabled=true
 btn.innerText="กำลังส่งข้อมูล..."
 
+/* ตรวจค่าที่จะส่ง */
+const data = new FormData(document.getElementById("leaveForm"))
+
+for (let pair of data.entries()) {
+console.log(pair[0], pair[1])
+}
+
+/* ส่งฟอร์ม */
 document.getElementById("leaveForm").submit()
 
 setTimeout(()=>{
-
 showPage("successPage")
 
 btn.disabled=false
@@ -431,8 +438,7 @@ btn.innerText="ยืนยันส่งข้อมูล"
 
 },1200)
 
-}
-/* RESET */
+}/* RESET */
 
 function resetForm(){
 
