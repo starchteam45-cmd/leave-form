@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>ระบบแจ้งลางาน</title>
+
+<style>
+
+body{
+font-family:sans-serif;
+background:#f3f5ff;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+margin:0;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:14px;
+width:100%;
+max-width:520px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+h2{
+text-align:center;
+color:#6f7cff;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+label{
+display:block;
+margin-top:12px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:6px;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+button{
+width:100%;
+margin-top:15px;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#aeb8ff;
+cursor:pointer;
+font-size:15px;
+}
+
+button:hover{
+background:#8f9aff;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
+.summary{
+background:#f7f8ff;
+padding:15px;
+border-radius:10px;
+line-height:1.7;
+}
+
+.error{
+color:red;
+font-size:13px;
+margin-top:6px;
+}
+
+.success{
+text-align:center;
+padding:20px;
+}
+
+.success h3{
+color:#4CAF50;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>แบบฟอร์ม แจ้งลางาน</h2>
+
+<form id="leaveForm"
+action="https://docs.google.com/forms/d/e/1FAIpQLScpIYsFGQfqlMgjzSfmckfnZQC682jZ9QtGNJJ-KlOzzws4mQ/formResponse"
+method="POST"
+target="hidden_iframe">
+
+<!-- PAGE 1 -->
+
+<div id="page1" class="page active">
+
+<label>รหัสพนักงาน</label>
+<input type="number" id="empid" name="entry.38178874">
+
+<label>ชื่อ-นามสกุล</label>
+<input type="text" id="fullname" name="entry.1606197275" readonly>
+
+<label>Position</label>
+<select id="position" name="entry.1103419436" disabled>
+<option>Foreman</option>
+<option>Forklift packing</option>
+<option>Forklift wet</option>
+<option>Front End</option>
+<option>Genaral</option>
+<option>Lab strach</option>
+<option>Leader FD</option>
+<option>Packing staff</option>
+<option>PD Admin</option>
+<option>Rasper</option>
+<option>Root Yard</option>
+<option>Tech FD</option>
+<option>Tech wet</option>
+</select>
+
+<label>ประเภทการลา</label>
+<select id="leaveType" onchange="checkLeaveType()">
+<option>AL - พักร้อน</option>
+<option>SL - ลาป่วย</option>
+<option>ลากิจ</option>
+<option value="other">อื่นๆ</option>
+</select>
+
+<input type="text" id="leaveOther" placeholder="ระบุประเภทการลา" style="display:none">
+
+<input type="hidden" name="entry.1316881948" id="leaveValue">
+
+<label>วันที่ขอลา - เริ่ม</label>
+
+<div class="row">
+<input type="date" id="startDate">
+<select id="startHour"></select>
+</div>
+
+<label>วันที่ขอลา - สิ้นสุด</label>
+
+<div class="row">
+<input type="date" id="endDate">
+<select id="endHour"></select>
+</div>
+
+<input type="hidden" name="entry.1032665740" id="startValue">
+<input type="hidden" name="entry.222086510" id="endValue">
+
+<label>ระยะเวลา</label>
+
+<select id="duration" onchange="checkDuration()">
+<option>1 วัน</option>
+<option>ครึ่งวัน (4 ชั่วโมง)</option>
+<option value="other">อื่นๆ</option>
+</select>
+
+<input type="text" id="durationOther" placeholder="ระบุระยะเวลา" style="display:none">
+
+<input type="hidden" name="entry.1351631759" id="durationValue">
+
+<label>กะ</label>
+
+<select id="shift" name="entry.952325922" disabled>
+<option>A</option>
+<option>B</option>
+<option>C</option>
+<option>D</option>
+<option>Day</option>
+</select>
+
+<div class="error" id="errorMsg"></div>
+
+<button type="button" onclick="nextStep()">ถัดไป</button>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div id="page2" class="page">
+
+<h3>ผู้ปฏิบัติงานแทน</h3>
+
+<label>ชื่อ (คนแทน 1)</label>
+<input type="text">
+
+<label>กะ (คนแทน 1)</label>
+<select>
+<option>A</option>
+<option>B</option>
+<option>C</option>
+<option>D</option>
+</select>
+
+<label>ชื่อ (คนแทน 2)</label>
+<input type="text">
+
+<label>กะ (คนแทน 2)</label>
+<select>
+<option>A</option>
+<option>B</option>
+<option>C</option>
+<option>D</option>
+</select>
+
+<button type="button" onclick="goSummary()">ถัดไป</button>
+
+</div>
+
+<!-- SUMMARY -->
+
+<div id="summaryPage" class="page">
+
+<h3>สรุปข้อมูล</h3>
+
+<div id="summaryBox"></div>
+
+<button type="button" onclick="showPage('page1')">แก้ไข</button>
+<button id="submitBtn" type="button" onclick="submitForm()">ยืนยันส่งข้อมูล</button>
+
+</div>
+
+<!-- SUCCESS PAGE -->
+
+<div id="successPage" class="page">
+
+<div class="success">
+
+<h3>ส่งข้อมูลสำเร็จ</h3>
+
+<p>ขอบคุณที่แจ้งลางาน</p>
+
+<button onclick="resetForm()">แจ้งลาคนถัดไป</button>
+
+</div>
+
+</div>
+
+</form>
+
+<iframe name="hidden_iframe" style="display:none"></iframe>
+
+</div>
+
+<script>
+
+const API_URL="https://script.google.com/macros/s/AKfycbz8B0UPrKmHfK_2CdTrt7UYoA23TeDqcesDtHupsWqhbB_4qyWymFGxtbA35jnU8EAVNQ/exec"
+
+/* เปลี่ยนหน้า */
+
+function showPage(id){
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"))
+
+document.getElementById(id).classList.add("active")
+
+}
+
+/* โหลดข้อมูลพนักงาน */
+
+empid.addEventListener("input",loadEmployee)
+
+function loadEmployee(){
+
+let id=empid.value
+
+if(id.length<3) return
+
+fetch(API_URL+"?id="+encodeURIComponent(id))
+
+.then(res=>res.json())
+
+.then(data=>{
+
+if(!data || !data.name){
+
+fullname.value=""
+position.value=""
+shift.value=""
+
+return
+
+}
+
+fullname.value=data.name
+
+position.value=data.position
+shift.value=data.shift
+
+})
+
+}
+
+/* dropdown ชั่วโมง */
+
+for(let i=0;i<24;i++){
+
+let h=(i<10?"0":"")+i+":00"
+
+startHour.innerHTML+=`<option>${h}</option>`
+endHour.innerHTML+=`<option>${h}</option>`
+
+}
+
+/* อื่นๆ */
+
+function checkDuration(){
+
+durationOther.style.display=
+duration.value==="other"?"block":"none"
+
+}
+
+function checkLeaveType(){
+
+leaveOther.style.display=
+leaveType.value==="other"?"block":"none"
+
+}
+
+/* validate */
+
+function validate(){
+
+if(!empid.value) return "กรุณากรอกรหัสพนักงาน"
+
+if(!fullname.value) return "ไม่พบชื่อพนักงาน"
+
+if(!startDate.value) return "กรุณาเลือกวันเริ่ม"
+
+if(!endDate.value) return "กรุณาเลือกวันสิ้นสุด"
+
+return ""
+
+}
+
+/* NEXT */
+
+function nextStep(){
+
+let err=validate()
+
+if(err){
+
+errorMsg.innerText=err
+return
+
+}
+
+if(shift.value==="Day"){
+
+goSummary()
+
+}else{
+
+showPage("page2")
+
+}
+
+}
+
+/* SUMMARY */
+
+function goSummary(){
+
+let start=startDate.value+" "+startHour.value
+let end=endDate.value+" "+endHour.value
+
+startValue.value=start
+endValue.value=end
+
+durationValue.value=
+duration.value==="other"?durationOther.value:duration.value
+
+leaveValue.value=
+leaveType.value==="other"?leaveOther.value:leaveType.value
+
+summaryBox.innerHTML=`
+
+<div class="summary">
+
+รหัสพนักงาน : ${empid.value}<br>
+ชื่อ : ${fullname.value}<br>
+Position : ${position.value}<br>
+ประเภทลา : ${leaveValue.value}<br>
+เริ่ม : ${start}<br>
+สิ้นสุด : ${end}<br>
+ระยะเวลา : ${durationValue.value}<br>
+กะ : ${shift.value}
+
+</div>
+
+`
+
+showPage("summaryPage")
+
+}
+
+/* SUBMIT */
+
+function submitForm(){
+
+const btn=document.getElementById("submitBtn")
+
+btn.disabled=true
+btn.innerText="กำลังส่งข้อมูล..."
+
+leaveForm.submit()
+
+setTimeout(()=>{
+
+showPage("successPage")
+
+btn.disabled=false
+btn.innerText="ยืนยันส่งข้อมูล"
+
+},1200)
+
+}
+
+/* RESET */
+
+function resetForm(){
+
+leaveForm.reset()
+
+fullname.value=""
+position.value=""
+shift.value=""
+
+showPage("page1")
+
+}
+
+</script>
+
+</body>
+</html>
