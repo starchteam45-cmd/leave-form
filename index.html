@@ -419,13 +419,7 @@ const btn=document.getElementById("submitBtn")
 btn.disabled=true
 btn.innerText="กำลังส่งข้อมูล..."
 
-const form=document.getElementById("leaveForm")
-
-fetch(form.action,{
-method:"POST",
-body:new FormData(form),
-mode:"no-cors"
-})
+leaveForm.submit()
 
 setTimeout(()=>{
 
@@ -434,7 +428,7 @@ showPage("successPage")
 btn.disabled=false
 btn.innerText="ยืนยันส่งข้อมูล"
 
-},1000)
+},1200)
 
 }
 /* RESET */
