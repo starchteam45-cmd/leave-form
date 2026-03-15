@@ -260,6 +260,8 @@ target="hidden_iframe">
 
 const API_URL="https://script.google.com/macros/s/AKfycbz8B0UPrKmHfK_2CdTrt7UYoA23TeDqcesDtHupsWqhbB_4qyWymFGxtbA35jnU8EAVNQ/exec"
 
+let sending = false;
+
 /* เปลี่ยนหน้า */
 
 function showPage(id){
@@ -426,8 +428,8 @@ showPage("summaryPage")
 
 function submitForm(){
 
-if(sending) return
-sending = true
+if(sending) return;
+sending = true;
 
 const btn=document.getElementById("submitBtn")
 
