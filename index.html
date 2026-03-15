@@ -101,10 +101,8 @@ color:#4CAF50;
 
 <h2>แบบฟอร์ม แจ้งลางาน</h2>
 
-<form id="leaveForm"
-action="https://docs.google.com/forms/d/e/1FAIpQLScpIYsFGQfqlMgjzSfmckfnZQC682jZ9QtGNJJ-KlOzzws4mQ/formResponse"
-method="POST"
-target="hidden_iframe">
+<form id="leaveForm">
+
 
 <!-- PAGE 1 -->
 
@@ -436,17 +434,17 @@ const btn=document.getElementById("submitBtn")
 btn.disabled=true
 btn.innerText="กำลังส่งข้อมูล..."
 
-/* ตรวจค่าที่จะส่ง */
-const data = new FormData(document.getElementById("leaveForm"))
+const form = document.getElementById("leaveForm")
+const data = new FormData(form)
 
-for (let pair of data.entries()) {
-console.log(pair[0], pair[1])
-}
-
-/* ส่งฟอร์ม */
-document.getElementById("leaveForm").submit()
+fetch("https://docs.google.com/forms/d/e/1FAIpQLScpIYsFGQfqlMgjzSfmckfnZQC682jZ9QtGNJJ-KlOzzws4mQ/formResponse",{
+method:"POST",
+mode:"no-cors",
+body:data
+})
 
 setTimeout(()=>{
+
 showPage("successPage")
 
 btn.disabled=false
@@ -455,7 +453,6 @@ btn.innerText="ยืนยันส่งข้อมูล"
 },1200)
 
 }
-
 /* RESET */
 
 function resetForm(){
