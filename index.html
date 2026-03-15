@@ -426,6 +426,9 @@ showPage("summaryPage")
 
 function submitForm(){
 
+if(sending) return
+sending = true
+
 const btn=document.getElementById("submitBtn")
 
 btn.disabled=true
@@ -449,7 +452,9 @@ btn.innerText="ยืนยันส่งข้อมูล"
 
 },1200)
 
-}/* RESET */
+}
+
+/* RESET */
 
 function resetForm(){
 
