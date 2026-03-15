@@ -101,7 +101,7 @@ color:#4CAF50;
 
 <h2>แบบฟอร์ม แจ้งลางาน</h2>
 
-<form id="leaveForm">
+<form id="leaveForm" onsubmit="return false;">
 
 
 <!-- PAGE 1 -->
@@ -115,7 +115,7 @@ color:#4CAF50;
 <input type="text" id="fullname" name="entry.1606197275" readonly>
 
 <label>Position</label>
-<select id="position" name="entry.1103419436" disabled>
+<select id="position" name="entry.1103419436" style="pointer-events:none;">
 <option>Foreman</option>
 <option>Forklift packing</option>
 <option>Forklift wet</option>
@@ -174,7 +174,7 @@ color:#4CAF50;
 
 <label>กะ</label>
 
-<select id="shift" name="entry.952325922" disabled>
+<select id="shift" name="entry.952325922" style="pointer-events:none;">
 <option>A</option>
 <option>B</option>
 <option>C</option>
@@ -249,8 +249,6 @@ color:#4CAF50;
 </div>
 
 </form>
-
-<iframe name="hidden_iframe" style="display:none;"></iframe>
 
 </div>
 
@@ -426,13 +424,13 @@ showPage("summaryPage")
 
 function submitForm(){
 
-if(sending) return;
-sending = true;
+if(sending) return
+sending = true
 
-const btn=document.getElementById("submitBtn")
+const btn = document.getElementById("submitBtn")
 
-btn.disabled=true
-btn.innerText="กำลังส่งข้อมูล..."
+btn.disabled = true
+btn.innerText = "กำลังส่งข้อมูล..."
 
 const form = document.getElementById("leaveForm")
 const data = new FormData(form)
@@ -450,10 +448,11 @@ showPage("successPage")
 btn.disabled=false
 btn.innerText="ยืนยันส่งข้อมูล"
 
+sending=false
+
 },1200)
 
-}
-/* RESET */
+}/* RESET */
 
 function resetForm(){
 
