@@ -273,19 +273,30 @@ document.getElementById(id).classList.add("active")
 
 /* โหลดข้อมูลพนักงาน */
 
-empid.addEventListener("input",loadEmployee)
+let typingTimer
+let lastQuery=""
+
+empid.addEventListener("input",()=>{
+
+clearTimeout(typingTimer)
+
+typingTimer=setTimeout(loadEmployee,500)
+
+})
 
 function loadEmployee(){
 
-let id=empid.value
+let id=empid.value.trim()
 
 if(id.length<3) return
 
+lastQuery=id
+
 fetch(API_URL+"?id="+encodeURIComponent(id))
-
 .then(res=>res.json())
-
 .then(data=>{
+
+if(id!==lastQuery) return
 
 if(!data || !data.name){
 
@@ -298,7 +309,6 @@ return
 }
 
 fullname.value=data.name
-
 position.value=data.position
 shift.value=data.shift
 
