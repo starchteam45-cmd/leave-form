@@ -109,7 +109,7 @@ color:#4CAF50;
 <div id="page1" class="page active">
 
 <label>รหัสพนักงาน</label>
-<input type="number" id="empid" name="entry.38178874">
+<input type="text" id="empid" name="entry.38178874" inputmode="numeric">
 
 <label>ชื่อ-นามสกุล</label>
 <input type="text" id="fullname" name="entry.1606197275" readonly>
@@ -258,7 +258,9 @@ color:#4CAF50;
 
 const API_URL="https://script.google.com/macros/s/AKfycbz8B0UPrKmHfK_2CdTrt7UYoA23TeDqcesDtHupsWqhbB_4qyWymFGxtbA35jnU8EAVNQ/exec"
 
-let sending = false;
+let employees=[]
+
+let sending=false;
 
 /* เปลี่ยนหน้า */
 
@@ -290,29 +292,20 @@ let id=empid.value.trim()
 
 if(id.length<3) return
 
-lastQuery=id
+let emp=employees.find(e=>e.id==id)
 
-fetch(API_URL+"?id="+encodeURIComponent(id))
-.then(res=>res.json())
-.then(data=>{
+if(!emp){
 
-if(id!==lastQuery) return
-
-if(!data || !data.name){
-
-fullname.value=""
+fullname.value="ไม่พบข้อมูลพนักงาน"
 position.value=""
 shift.value=""
-
 return
 
 }
 
-fullname.value=data.name
-position.value=data.position
-shift.value=data.shift
-
-})
+fullname.value=emp.name
+position.value=emp.position
+shift.value=emp.shift
 
 }
 
@@ -371,6 +364,8 @@ errorMsg.innerText=err
 return
 
 }
+
+errorMsg.innerText=""
 
 if(shift.value==="Day"){
 
@@ -483,6 +478,9 @@ leaveForm.reset()
 fullname.value=""
 position.value=""
 shift.value=""
+
+leaveOther.style.display="none"
+durationOther.style.display="none"
 
 showPage("page1")
 
