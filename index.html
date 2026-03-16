@@ -141,7 +141,7 @@ color:#4CAF50;
 
 <input type="text" id="leaveOther" placeholder="ระบุประเภทการลา" style="display:none">
 
-<input type="hidden" name="entry.1316881948" id="leaveValue">
+<input type="hidden" name="entry.1316881948.other_option_response" id="leaveOtherValue">
 
 <label>วันที่ขอลา - เริ่ม</label>
 
@@ -170,7 +170,7 @@ color:#4CAF50;
 
 <input type="text" id="durationOther" placeholder="ระบุระยะเวลา" style="display:none">
 
-<input type="hidden" name="entry.1351631759" id="durationValue">
+<input type="hidden" name="entry.1351631759.other_option_response" id="durationOtherValue">
 
 <label>กะ</label>
 
@@ -388,11 +388,21 @@ let end=endDate.value+" "+endHour.value
 startValue.value=start
 endValue.value=end
 
-durationValue.value=
-duration.value==="other"?durationOther.value:duration.value
+if(duration.value==="other"){
+ durationValue.value="__other_option__"
+ durationOtherValue.value=durationOther.value
+}else{
+ durationValue.value=duration.value
+ durationOtherValue.value=""
+}
 
-leaveValue.value=
-leaveType.value==="other"?leaveOther.value:leaveType.value
+if(leaveType.value==="other"){
+ leaveValue.value="__other_option__"
+ leaveOtherValue.value=leaveOther.value
+}else{
+ leaveValue.value=leaveType.value
+ leaveOtherValue.value=""
+}
 
 summaryBox.innerHTML=`
 
