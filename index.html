@@ -260,6 +260,18 @@ const API_URL="https://script.google.com/macros/s/AKfycbz8B0UPrKmHfK_2CdTrt7UYoA
 
 let employees=[]
 
+function loadEmployees(){
+
+fetch(API_URL+"?all=1")
+.then(res=>res.json())
+.then(data=>{
+employees=data
+console.log("employees loaded",employees)
+})
+
+}
+
+loadEmployees()
 let sending=false;
 
 /* เปลี่ยนหน้า */
@@ -292,7 +304,7 @@ let id=empid.value.trim()
 
 if(id.length<3) return
 
-let emp=employees.find(e=>e.id==id)
+let emp=employees.find(e=>String(e.id)===String(id))
 
 if(!emp){
 
