@@ -69,6 +69,10 @@ display:flex;
 gap:10px;
 }
 
+.row button{
+flex:1;
+}
+
 .summary{
 background:#f7f8ff;
 padding:15px;
@@ -217,8 +221,9 @@ color:#4CAF50;
 <label><input type="radio" name="entry.151814737" value="C"> C</label>
 <label><input type="radio" name="entry.151814737" value="D"> D</label>
 
+<div class="row">
+<button type="button" onclick="showPage('page1')">ย้อนกลับ</button>
 <button type="button" onclick="goSummary()">ถัดไป</button>
-
 </div>
 
 <!-- SUMMARY -->
