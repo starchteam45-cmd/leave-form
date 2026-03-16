@@ -413,10 +413,10 @@ summaryBox.innerHTML=`
 รหัสพนักงาน : ${empid.value}<br>
 ชื่อ : ${fullname.value}<br>
 Position : ${position.value}<br>
-ประเภทลา : ${leaveValue.value}<br>
+ประเภทลา : ${leaveType.value==="other" ? leaveOther.value : leaveType.value}<br>
 เริ่ม : ${start}<br>
 สิ้นสุด : ${end}<br>
-ระยะเวลา : ${durationValue.value}<br>
+ระยะเวลา : ${duration.value==="other" ? durationOther.value : duration.value}<br>
 กะ : ${shift.value}
 
 <br><br>
